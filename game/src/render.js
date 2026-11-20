@@ -40,9 +40,9 @@ export function createRenderer(canvas) {
     if (sw > 0 && sh > 0) ctx.drawImage(cityCanvas, sx, sy, sw, sh, sx, sy, sw, sh);
 
     const g = ctx.createLinearGradient(v.x, v.y, v.x, v.y + v.h);
-    g.addColorStop(0, 'rgba(6,10,22,0.30)');
-    g.addColorStop(0.55, 'rgba(4,7,16,0.22)');
-    g.addColorStop(1, 'rgba(2,4,10,0.38)');
+    g.addColorStop(0, 'rgba(34,48,78,0.16)');
+    g.addColorStop(0.55, 'rgba(18,26,46,0.08)');
+    g.addColorStop(1, 'rgba(10,16,32,0.18)');
     ctx.fillStyle = g;
     ctx.fillRect(v.x, v.y, v.w, v.h);
 
@@ -65,8 +65,8 @@ export function createRenderer(canvas) {
       if (lamp.x < v.x - 190 || lamp.x > v.x + v.w + 190 || lamp.y < v.y - 190 || lamp.y > v.y + v.h + 190) continue;
       const grad = ctx.createRadialGradient(lamp.x, lamp.y, 4, lamp.x, lamp.y, lamp.r);
       const warm = lamp.tone > 0.55 ? '255,190,110' : '130,210,255';
-      grad.addColorStop(0, `rgba(${warm},0.28)`);
-      grad.addColorStop(0.45, `rgba(${warm},0.11)`);
+      grad.addColorStop(0, `rgba(${warm},0.36)`);
+      grad.addColorStop(0.45, `rgba(${warm},0.15)`);
       grad.addColorStop(1, `rgba(${warm},0)`);
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -253,7 +253,7 @@ export function createRenderer(canvas) {
   function drawVignette(game) {
     const grad = ctx.createRadialGradient(VIEW.width / 2, VIEW.height / 2, VIEW.height * 0.34, VIEW.width / 2, VIEW.height / 2, VIEW.width * 0.76);
     grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(0,0,0,0.48)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.28)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, VIEW.width, VIEW.height);
     if (game.effects.flash > 0) {
@@ -263,9 +263,9 @@ export function createRenderer(canvas) {
       ctx.globalAlpha = 1;
     }
     const scan = ctx.createLinearGradient(0, 0, 0, VIEW.height);
-    scan.addColorStop(0, 'rgba(90,140,190,0.05)');
+    scan.addColorStop(0, 'rgba(255,168,110,0.06)');
     scan.addColorStop(0.5, 'rgba(0,0,0,0)');
-    scan.addColorStop(1, 'rgba(160,70,120,0.05)');
+    scan.addColorStop(1, 'rgba(150,90,210,0.06)');
     ctx.fillStyle = scan;
     ctx.fillRect(0, 0, VIEW.width, VIEW.height);
   }
@@ -460,11 +460,11 @@ function buildCityCanvas() {
         c.fill();
       }
       c.globalAlpha = 1;
-      c.fillStyle = '#34372f';
+      c.fillStyle = '#4b4e42';
       c.fillRect(block.x0 + (block.x1 - block.x0) / 2 - 14, block.y0, 28, block.y1 - block.y0);
       c.fillRect(block.x0, block.y0 + (block.y1 - block.y0) / 2 - 14, block.x1 - block.x0, 28);
     } else if (block.type === 'lot') {
-      c.fillStyle = '#1b2028';
+      c.fillStyle = '#2e3642';
       c.fillRect(block.x0, block.y0, block.x1 - block.x0, block.y1 - block.y0);
       c.strokeStyle = 'rgba(190,190,160,0.22)';
       c.lineWidth = 2;
@@ -479,9 +479,9 @@ function buildCityCanvas() {
         c.stroke();
       }
     } else {
-      c.fillStyle = '#262b34';
+      c.fillStyle = '#3a4350';
       c.fillRect(block.x0, block.y0, block.x1 - block.x0, block.y1 - block.y0);
-      c.fillStyle = 'rgba(255,255,255,0.025)';
+      c.fillStyle = 'rgba(255,255,255,0.05)';
       for (let i = 0; i < 10; i++) c.fillRect(block.x0 + rng() * (block.x1 - block.x0), block.y0 + rng() * (block.y1 - block.y0), 30 + rng() * 80, 2);
     }
     c.strokeStyle = COLORS.sidewalkEdge;
@@ -604,7 +604,7 @@ function drawRoadMarkings(c) {
 
 function drawBuilding(c, b) {
   const shadow = 8 + b.height * 2.4;
-  c.fillStyle = 'rgba(0,0,0,0.46)';
+  c.fillStyle = 'rgba(0,0,0,0.32)';
   c.fillRect(b.x + shadow * 0.5, b.y + shadow * 0.55, b.w, b.h);
   c.fillStyle = b.wall;
   c.fillRect(b.x, b.y, b.w, b.h);
@@ -621,8 +621,8 @@ function drawBuilding(c, b) {
   const cols = Math.max(1, Math.floor((b.w - 20) / 17));
   for (let r = 0; r < rows; r++) {
     for (let q = 0; q < cols; q++) {
-      const lit = hash01(r * 17 + q * 3 + b.x + b.y + b.lit * 40) > 0.68;
-      c.fillStyle = lit ? `rgba(255,214,145,${0.14 + hash01(q + r) * 0.18})` : 'rgba(8,14,24,0.42)';
+      const lit = hash01(r * 17 + q * 3 + b.x + b.y + b.lit * 40) > 0.58;
+      c.fillStyle = lit ? `rgba(255,218,150,${0.24 + hash01(q + r) * 0.24})` : 'rgba(18,26,38,0.32)';
       c.fillRect(b.x + 14 + q * 17, b.y + 14 + r * 16, 8, 6);
     }
   }

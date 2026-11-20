@@ -275,6 +275,20 @@ function drawMinimap(ctx, game) {
     ctx.arc(m.x, m.y, 2.5, 0, TAU);
     ctx.fill();
   }
+  for (const lm of Object.values(game.city.landmarks)) {
+    const m = toMap(lm.pos.x, lm.pos.y);
+    if (m.x < x + 4 || m.x > x + size - 4 || m.y < y + 4 || m.y > y + size - 4) continue;
+    ctx.save();
+    ctx.translate(m.x, m.y);
+    ctx.rotate(Math.PI / 4);
+    ctx.fillStyle = lm.key === 'police'
+      ? 'rgba(130,174,255,0.9)'
+      : lm.key === 'hospital'
+        ? 'rgba(120,232,160,0.9)'
+        : 'rgba(126,214,230,0.6)';
+    ctx.fillRect(-2.4, -2.4, 4.8, 4.8);
+    ctx.restore();
+  }
 
   const marker = game.mission?.marker;
   if (marker) {
@@ -543,16 +557,16 @@ function drawCrosshair(ctx, game) {
 export function drawStartScreen(ctx, game, saveInfo, hoverId) {
   const t = game.time;
   const grad = ctx.createLinearGradient(0, 0, VIEW.width * 0.82, 0);
-  grad.addColorStop(0, 'rgba(4,7,13,0.96)');
-  grad.addColorStop(0.45, 'rgba(4,7,13,0.82)');
-  grad.addColorStop(0.78, 'rgba(4,7,13,0.24)');
-  grad.addColorStop(1, 'rgba(4,7,13,0)');
+  grad.addColorStop(0, 'rgba(6,10,18,0.92)');
+  grad.addColorStop(0.45, 'rgba(6,10,18,0.72)');
+  grad.addColorStop(0.78, 'rgba(6,10,18,0.16)');
+  grad.addColorStop(1, 'rgba(6,10,18,0)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, VIEW.width, VIEW.height);
   const top = ctx.createLinearGradient(0, 0, 0, VIEW.height);
-  top.addColorStop(0, 'rgba(2,4,9,0.55)');
-  top.addColorStop(0.6, 'rgba(2,4,9,0.05)');
-  top.addColorStop(1, 'rgba(2,4,9,0.7)');
+  top.addColorStop(0, 'rgba(2,4,9,0.42)');
+  top.addColorStop(0.6, 'rgba(2,4,9,0.03)');
+  top.addColorStop(1, 'rgba(2,4,9,0.58)');
   ctx.fillStyle = top;
   ctx.fillRect(0, 0, VIEW.width, VIEW.height);
 
@@ -671,6 +685,12 @@ export function drawPause(ctx, game, hoverId) {
   ctx.fillStyle = COLORS.muted;
   ctx.font = `500 13px ${FONT}`;
   ctx.fillText('Port Vela keeps moving without you.', VIEW.width / 2, 312);
+  const chapter = game.mission.done ? 'FREE ROAM' : `MISSION ${game.mission.index + 1} / ${game.mission.total}`;
+  ctx.fillStyle = 'rgba(238,245,255,0.82)';
+  ctx.font = `700 12px ${FONT}`;
+  ctx.letterSpacing = '1px';
+  ctx.fillText(`${chapter}   ·   ${formatMoney(game.money)}   ·   ${game.kills} TAKEDOWNS   ·   ${Math.max(0, game.wanted.stars)}/5 HEAT`, VIEW.width / 2, 340);
+  ctx.letterSpacing = '0px';
   for (const b of PAUSE_BUTTONS) {
     const hover = hoverId === b.id;
     ctx.fillStyle = hover ? 'rgba(79,214,192,0.22)' : 'rgba(10,16,24,0.82)';
