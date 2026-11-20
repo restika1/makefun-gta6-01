@@ -1,61 +1,96 @@
-// Every tuning number and colour in one place. The playfield is a fixed 1280x720 logical area;
-// the renderer scales it to the window, so no rule below depends on the screen size.
-
-export const FIELD = { width: 1280, height: 720, groundY: 664 };
-
-/** The simulation's fixed step, in seconds: 60 updates a second whatever the display's rate. */
+export const VIEW = { width: 1280, height: 720 };
 export const STEP = 1 / 60;
 
+export const CITY = {
+  name: 'PORT VELA',
+  subtitle: 'NIGHTFALL',
+  tagline: 'Three debts. One long night.',
+  gameTitle: 'Port Vela: Nightfall',
+};
+
+export const CELL = 620;
+export const ROAD = 150;
+export const GRID = 6;
+export const WORLD = { width: CELL * GRID, height: CELL * GRID };
+
 export const PLAYER = {
-  width: 72,
-  height: 24,
-  speed: 560,
-  invulnerable: 1.5,
+  radius: 13,
+  walk: 178,
+  sprint: 286,
+  maxHealth: 100,
+  regenDelay: 7,
+  regenRate: 3.2,
+  fireDelay: 0.16,
+  bulletSpeed: 1120,
+  bulletDamage: 26,
 };
 
-export const LIVES = 3;
-
-export const BLOCK = {
-  minWidth: 40,
-  maxWidth: 110,
-  height: 36,
-  speed: 240,
-  speedPerLevel: 30,
-  speedJitter: 90,
-  interval: 0.55,
-  intervalScale: 0.88,
-  minInterval: 0.14,
-  dodgePoints: 1,
+export const VEHICLE = {
+  radius: 30,
+  accel: 690,
+  brake: 1080,
+  drag: 0.72,
+  maxSpeed: 440,
+  reverseSpeed: 150,
+  steer: 2.5,
+  handbrake: 0.55,
 };
 
-export const COIN = {
-  size: 24,
-  speed: 190,
-  speedPerLevel: 14,
-  interval: 1.4,
-  intervalJitter: 0.8,
-  points: 10,
+export const WANTED = {
+  max: 5,
+  decayDelay: 9,
+  decayRate: 0.055,
+  copShootRange: 560,
 };
 
-/** Seconds of play per level, and the last level: speeds and spawn rates stop growing there. */
-export const LEVEL = { seconds: 12, max: 12 };
+export const TRAFFIC = { target: 20, pedTarget: 26 };
+export const SAVE_KEY = 'port-vela-nightfall.save.v1';
+export const MUTE_KEY = 'port-vela-nightfall.muted';
 
-/** How many falling things can exist at once; the pool is allocated once, at boot. */
-export const POOL_SIZE = 64;
-
-export const PALETTE = {
-  backdrop: '#11141b',
-  sky: '#1b1f2a',
-  ground: '#2a3040',
-  player: '#4fc3f7',
-  block: '#e5534b',
-  coin: '#f2c94c',
-  panel: '#252b38',
-  text: '#eef1f5',
-  muted: '#8b93a3',
+// The story's chapter headings are shown on the title card and the pause menu.
+export const STORY = {
+  chapters: ['Wake Up Call', 'Hot Cargo', 'The Ledger'],
+  finale: 'Port Vela is yours.',
 };
 
-export const FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif';
+export const COLORS = {
+  void: '#05070d',
+  asphalt: '#161b22',
+  asphaltLight: '#1d232c',
+  patch: '#12161c',
+  lane: '#c7b779',
+  laneDim: '#857a4d',
+  sidewalk: '#2b3038',
+  sidewalkEdge: '#3b424c',
+  curb: '#49515d',
+  grass: '#1f352b',
+  grassLight: '#274435',
+  water: '#0d2433',
+  roof: ['#2b3140', '#333a4b', '#2e3a3a', '#3c3140', '#3a352b', '#293344'],
+  wall: ['#222833', '#282f3b', '#252f2e', '#302732', '#2f2b23', '#212a36'],
+  neon: ['#ff4f8b', '#45e2cb', '#ffc857', '#8a7dff', '#ff8747', '#6cd7ff'],
+  player: '#4fd6c0',
+  playerDark: '#1d6f68',
+  skin: '#d9a277',
+  ped: ['#c46b5a', '#7f8fa6', '#8c7bb0', '#b79a5b', '#5f9e86', '#a26a86', '#9aa7b4'],
+  cop: '#3d5f9e',
+  copLight: '#6f9be8',
+  hostile: '#a43e4b',
+  policeCar: '#d9e3f2',
+  policeDark: '#1f2a3d',
+  bullet: '#ffe29a',
+  health: '#55d68a',
+  armor: '#5aa9e6',
+  wanted: '#ffbf3f',
+  danger: '#ff4d67',
+  money: '#a9ef7d',
+  glass: '#1a2735',
+  hudBg: 'rgba(7,11,18,0.78)',
+  hudLine: 'rgba(131,217,255,0.22)',
+  white: '#eef5ff',
+  muted: '#8d9aab',
+  gold: '#ffc857',
+};
 
-/** Where the best score is kept between visits (this browser only). */
-export const BEST_KEY = 'block-dodger.best';
+export const FONT = '"Segoe UI", system-ui, -apple-system, Arial, sans-serif';
+export const FONT_DISPLAY = '"Arial Black", "Segoe UI", system-ui, sans-serif';

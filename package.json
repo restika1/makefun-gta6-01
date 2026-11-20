@@ -1,0 +1,15 @@
+{
+  "name": "port-vela-nightfall",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Port Vela: Nightfall — an original open-world crime game rendered with the Canvas 2D API.",
+  "type": "module",
+  "scripts": {
+    "serve": "node serve.ts",
+    "shots": "node scripts/capture.mjs",
+    "build": "node main.ts"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.1"
+  }
+}
