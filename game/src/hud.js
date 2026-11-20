@@ -25,6 +25,7 @@ export function drawHUD(ctx, game) {
   drawNotifications(ctx, game);
   drawDialogue(ctx, game);
   drawBottomLeft(ctx, game);
+  drawContextHint(ctx, game);
   drawControlsHint(ctx, game);
   drawObjectiveArrow(ctx, game);
   drawCrosshair(ctx, game);
@@ -440,6 +441,41 @@ function drawBottomLeft(ctx, game) {
     ctx.font = `700 9px ${FONT}`;
     ctx.fillText('SIDEARM · UNLIMITED', x + 18, y + 60);
   }
+}
+
+function drawContextHint(ctx, game) {
+  const p = game.player;
+  if (p.inCar && p.car) return;
+  let best = null;
+  let bestD = 118;
+  for (const car of game.cars) {
+    if (car.kind === 'wreck') continue;
+    const d = Math.hypot(car.x - p.x, car.y - p.y);
+    if (d < bestD) {
+      bestD = d;
+      best = car;
+    }
+  }
+  if (!best) return;
+  const label = best.kind === 'police' ? 'STEAL CRUISER' : best.kind === 'traffic' ? 'CARJACK' : 'DRIVE';
+  const text = `E  ${label} · ${best.name.toUpperCase()}`;
+  ctx.save();
+  ctx.font = `700 11px ${FONT}`;
+  const w = Math.min(430, ctx.measureText(text).width + 36);
+  const x = (VIEW.width - w) / 2;
+  const y = VIEW.height - 104;
+  ctx.fillStyle = 'rgba(7,11,18,0.84)';
+  roundRect(ctx, x, y, w, 30, 8);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(79,214,192,0.42)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, x, y, w, 30, 8);
+  ctx.stroke();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = COLORS.player;
+  ctx.fillText(text, VIEW.width / 2, y + 16);
+  ctx.restore();
 }
 
 function drawControlsHint(ctx, game) {

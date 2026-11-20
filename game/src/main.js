@@ -8,7 +8,7 @@ import { createPlayer, updateCombat, updatePeds, updateCops, updateHostiles, upd
 import { spawnTrafficCar, spawnParkedCar, updateCars } from './vehicles.js';
 import { createRenderer, useCityForRenderer } from './render.js';
 import { drawHUD, drawStartScreen, drawPause, drawEndOverlay, buttonAt, START_BUTTONS, PAUSE_BUTTONS } from './hud.js';
-import { createMissionState, beginStep, updateMissions, updateDialogue, MISSIONS } from './missions.js';
+import { createMissionState, beginStep, updateMissions, updateDialogue, showSay, MISSIONS } from './missions.js';
 import { stageShot } from './shots.js';
 
 const canvas = document.getElementById('game');
@@ -22,7 +22,7 @@ useCityForRenderer(city);
 const renderer = createRenderer(canvas);
 const input = createInput(canvas);
 const audio = createAudio();
-const saved = readSave();
+let saved = readSave();
 
 const game = {
   city,
@@ -202,6 +202,7 @@ function newGame(g) {
   for (let i = 0; i < 16; i++) spawnTrafficCar(g, g.player);
   for (let i = 0; i < 24; i++) spawnPed(g, { minDist: 100, maxDist: 900 });
   beginStep(g, true);
+  showSay(g, MISSIONS[0].intro);
   g.screen = 'play';
   g.saveTimer = 0;
   g.camera.x = g.player.x;
@@ -428,6 +429,7 @@ function updatePaused(g) {
     if (hit?.id === 'resume') g.screen = 'play';
     if (hit?.id === 'title') {
       g.saveGame();
+      saved = readSave();
       g.screen = 'start';
       g.camera.x = g.player.x;
       g.camera.y = g.player.y - 130;
